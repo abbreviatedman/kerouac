@@ -10,5 +10,5 @@ Writers benefit from splitting their work into writing time and editing time. Th
 
 - [ ] User can easily launch writing mode.
 - [ ] User gets a gentle confirmation before switching back to editing mode.
-- [X] In writing mode, user can't select text.
-- [ ] Iin writing mode, user can't delete text.
+- [X] In writing mode, user is prevented from selecting text.
+- [ ] Iin writing mode, user is prevented from deleting text.
