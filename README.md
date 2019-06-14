@@ -8,7 +8,7 @@ Writers benefit from splitting their work into writing time and editing time. Th
 
 ### Feature Roadmap to 1.0
 
-1. User can easily launch writing mode.
-2. User gets a gentle confirmation before switching back to editing mode.
-1. ~~In writing mode, user can't select text.~~
-2. Iin writing mode, user can't delete text.
+- [ ] User can easily launch writing mode.
+- [ ] User gets a gentle confirmation before switching back to editing mode.
+- [X] In writing mode, user can't select text.
+- [ ] Iin writing mode, user can't delete text.
