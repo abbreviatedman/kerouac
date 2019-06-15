@@ -9,9 +9,16 @@ const activate = (context) => {
 		window.showInformationMessage('Writing mode ACTIVATED.');
 
 		window.onDidChangeTextEditorSelection(() => {
-			const {start} = window.activeTextEditor.selection
-			const newSelection = new Selection(start, start);		
-			window.activeTextEditor.selection = newSelection;
+			// const {start} = window.activeTextEditor.selection
+			// const newSelection = new Selection(start, start);		
+			// window.activeTextEditor.selection = newSelection;
+			window.activeTextEditor.selections = window
+				.activeTextEditor
+				.selections
+				.map(selection => new Selection(
+					selection.start,
+					selection.start
+				));
 		});
 	});;
 

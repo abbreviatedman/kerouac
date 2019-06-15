@@ -8,7 +8,11 @@ Writers benefit from splitting their work into writing time and editing time. Th
 
 ### Feature Roadmap to 1.0
 
-- [ ] User can easily launch writing mode.
-- [ ] User gets a gentle confirmation before switching back to editing mode.
-- [X] In writing mode, user is prevented from selecting text.
+- [X] User can easily launch writing mode.
+- [ ] User can switch to editing mode.
+    - [ ] User gets a gentle confirmation before switching back to editing mode.
+- [ ] In writing mode, user is prevented from selecting text.
+    - [X] Single-cursor selection is disallowed.
+    - [X] Selection with multiple cursors is disallowed.
+    - [ ] FInal placement of cursor follows cursor movement of prevented selection command.
 - [ ] Iin writing mode, user is prevented from deleting text.
