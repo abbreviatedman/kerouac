@@ -35,7 +35,8 @@ function handleSelection() {
 			.map(selection => new Selection(
 				selection.start,
 				selection.start
-			));
+			)
+		);
 	}
 }
 
