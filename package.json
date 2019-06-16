@@ -10,14 +10,18 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.kerouacWritingMode"
+		"*"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.kerouacWritingMode",
+				"command": "extension.kerouac.writingMode",
 				"title": "Kerouac - Writing Mode"
+			},
+			{
+				"command": "extension.kerouac.editingMode",
+				"title": "Kerouac - Editing Mode"
 			}
 		]
 	},

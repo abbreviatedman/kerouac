@@ -12,7 +12,7 @@ Writers benefit from splitting their work into writing time and editing time. Th
 
 - [X] User can easily switch writing mode.
 - [ ] User can switch to editing mode.
-    - [ ] User can switch back and forth.
+    - [X] User can switch back and forth.
     - [ ] User gets a gentle confirmation before switching back to editing mode.
 - [ ] In writing mode, user is frictionlessly prevented from selecting text in all cases.
     - [X] Single-cursor selection is disallowed.
