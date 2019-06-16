@@ -4,14 +4,15 @@ const {commands, window, Selection} = require('vscode');
 let writingMode = false;
 
 const activate = ({subscriptions}) => {
-  window.onDidChangeTextEditorSelection(handleSelection);
-
+  let listener = {dispose: () => {}};
+  
   subscriptions.push(commands.registerCommand(
     'extension.kerouac.writingMode',
     () => {
       if(writingMode === false) {
         writingMode = true;
         window.showInformationMessage('Writing mode ACTIVATED.');
+        listener = window.onDidChangeTextEditorSelection(handleSelection);
       }
     }
   ));
@@ -22,22 +23,17 @@ const activate = ({subscriptions}) => {
       if(writingMode === true) {
         writingMode = false;
         window.showInformationMessage('Editing mode ACTIVATED.');
+        listener.dispose();
       }
     }
-  ));
+	));
 }
 
 function handleSelection() {
-	if (writingMode === true) {
-		window.activeTextEditor.selections = window
-			.activeTextEditor
-			.selections
-			.map(selection => new Selection(
-				selection.start,
-				selection.start
-			)
-		);
-	}
+  const {selections} = window.activeTextEditor;
+  window.activeTextEditor.selections = selections.map(
+    ({start}) => new Selection(start, start)
+  );
 }
 
 exports.activate = activate;
