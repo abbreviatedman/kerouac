@@ -1,9 +1,11 @@
-const {commands, window, Selection} = require('vscode');
+const {commands, window, workspace, Selection} = require('vscode');
 
 
 let writingMode = false;
 
 const activate = ({subscriptions}) => {
+  let oldText = window.activeTextEditor.document.getText();
+  // let oldText = '';
   let listener = {dispose() {}};
   
   subscriptions.push(commands.registerCommand(
@@ -13,6 +15,8 @@ const activate = ({subscriptions}) => {
         writingMode = true;
         window.showInformationMessage('Writing mode ACTIVATED.');
         listener = window.onDidChangeTextEditorSelection(handleSelection);
+        workspace.onDidChangeTextDocument(handleChange);
+        oldText = window.activeTextEditor.document.getText();
       }
     }
   ));
@@ -33,6 +37,13 @@ const activate = ({subscriptions}) => {
     activeTextEditor.selections = activeTextEditor.selections.map(
       ({active}) => new Selection(active, active)
     );
+  }
+
+  function handleChange({contentChanges}) {
+    console.log(contentChanges);
+    const text = window.activeTextEditor.document.getText();
+    console.log(oldText.length - text.length);
+    oldText = text;
   }
 }
 
