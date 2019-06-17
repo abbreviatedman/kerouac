@@ -4,7 +4,7 @@ const {commands, window, Selection} = require('vscode');
 let writingMode = false;
 
 const activate = ({subscriptions}) => {
-  let listener = {dispose: () => {}};
+  let listener = {dispose() {}};
   
   subscriptions.push(commands.registerCommand(
     'extension.kerouac.writingMode',
@@ -26,15 +26,16 @@ const activate = ({subscriptions}) => {
         listener.dispose();
       }
     }
-	));
+  ));
+
+  function handleSelection() {
+    const {activeTextEditor} = window;
+    activeTextEditor.selections = activeTextEditor.selections.map(
+      ({active}) => new Selection(active, active)
+    );
+  }
 }
 
-function handleSelection() {
-  const {selections} = window.activeTextEditor;
-  window.activeTextEditor.selections = selections.map(
-    ({start}) => new Selection(start, start)
-  );
-}
 
 exports.activate = activate;
 
