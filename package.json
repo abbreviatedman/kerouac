@@ -2,6 +2,7 @@
 	"name": "kerouac",
 	"displayName": "Kerouac",
 	"description": "A Visual Studio Code extension to encourage separation of writing and editing modes.",
+	"publisher": "colin-jaffe",
 	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.29.0"
