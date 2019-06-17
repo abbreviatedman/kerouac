@@ -10,7 +10,7 @@ Writers benefit from splitting their work into writing time and editing time. Th
 
 ### Feature Roadmap to 1.0
 
-- [X] User can easily switch writing mode.
+- [X] User can easily switch to writing mode.
 - [ ] User can switch to editing mode.
     - [X] User can switch back and forth.
     - [ ] User gets a gentle confirmation before switching back to editing mode.
