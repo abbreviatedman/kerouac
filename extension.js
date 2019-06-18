@@ -47,20 +47,21 @@ const activate = ({subscriptions}) => {
   function handleChange({contentChanges}) {
     const text = activeTextEditor.document.getText();
     const {length} = text;
-    if (contentChanges.length > 0) {
-      if (contentChanges[0].text.length === 0 && length < oldText.length) {
-        const fullTextRange = new Range(
-          new Position(0, 0),
-          new Position(oldText.length, oldText.length)
-        );
-        activeTextEditor.edit((editBuilder) => {
-          editBuilder.replace(fullTextRange, oldText);
-        });
-        window.showInformationMessage(`We don't want to delete during writing mode. It would make Jack Kerouac sad.`, {modal: true});
-      }
+    if (
+      contentChanges.length > 0
+      && contentChanges[0].text.length === 0
+      && length < oldText.length
+    ) {
+      const fullTextRange = new Range(
+        new Position(0, 0),
+        new Position(oldText.length, oldText.length)
+      );
+      activeTextEditor.edit((editBuilder) => {
+        editBuilder.replace(fullTextRange, oldText);
+      });
+      window.showInformationMessage(`We don't want to delete during writing mode. It would make Jack Kerouac sad.`, {modal: true});
     }
     oldText = text;
-    // resetCursors();
   }
 }
 
