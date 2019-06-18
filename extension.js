@@ -12,13 +12,13 @@ const activate = ({subscriptions}) => {
   subscriptions.push(commands.registerCommand(
     'extension.kerouac.writingMode',
     () => {
-      if(writingMode === false) {
+      if (writingMode === false) {
         writingMode = true;
         window.showInformationMessage('Writing mode ACTIVATED.');
         selectionListener = window
-          .onDidChangeTextEditorSelection(resetCursor);
+          .onDidChangeTextEditorSelection(resetCursors);
         documentListener = workspace
-          .onDidChangeTextDocument((handleChange));
+          .onDidChangeTextDocument(handleChange);
         oldText = activeTextEditor.document.getText();
       }
     }
@@ -27,7 +27,7 @@ const activate = ({subscriptions}) => {
   subscriptions.push(commands.registerCommand(
     'extension.kerouac.editingMode',
     () => {
-      if(writingMode === true) {
+      if (writingMode === true) {
         writingMode = false;
         window.showInformationMessage('Editing mode ACTIVATED.');
         documentListener.dispose();
@@ -36,27 +36,31 @@ const activate = ({subscriptions}) => {
     }
   ));
 
-  function resetCursor() {
-    const {activeTextEditor} = window;
-    activeTextEditor.selections = activeTextEditor.selections.map(
-      ({active}) => new Selection(active, active)
-    );
+  function resetCursors() {
+    if (!(activeTextEditor.selection.isEmpty)) {
+      activeTextEditor.selections = activeTextEditor.selections.map(
+        ({active}) => new Selection(active, active)
+      );
+    }
   }
 
   function handleChange({contentChanges}) {
+    const text = activeTextEditor.document.getText();
+    const {length} = text;
     if (contentChanges.length > 0) {
-      if (contentChanges[0].text.length === 0) {
-        const fullTextRange = new Range(new Position(0, 0), new Position(oldText.length, oldText.length));
-        const {length} = activeTextEditor.document.getText();
+      if (contentChanges[0].text.length === 0 && length < oldText.length) {
+        const fullTextRange = new Range(
+          new Position(0, 0),
+          new Position(oldText.length, oldText.length)
+        );
         activeTextEditor.edit((editBuilder) => {
           editBuilder.replace(fullTextRange, oldText);
-        })
-        // window.showInputBox({placeHolder: `There's no deletion in writing mode!`});
-        window.showInformationMessage(`We don't want to delete during writing mode. It would make Jack Kerouac sad.`, {modal: true})
+        });
+        window.showInformationMessage(`We don't want to delete during writing mode. It would make Jack Kerouac sad.`, {modal: true});
       }
     }
-    const text = activeTextEditor.document.getText();
     oldText = text;
+    // resetCursors();
   }
 }
 
