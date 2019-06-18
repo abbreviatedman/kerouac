@@ -18,4 +18,4 @@ Writers benefit from splitting their work into writing time and editing time. Th
     - [X] Single-cursor selection is disallowed.
     - [X] Selection with multiple cursors is disallowed.
     - [X] Final placement of cursor follows cursor movement of prevented selection command.
-- [ ] In writing mode, user is prevented from deleting text with any deletion key.
+- [X] In writing mode, user is prevented from deleting text with any deletion key.

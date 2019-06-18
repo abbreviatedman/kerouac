@@ -1,12 +1,13 @@
-const {commands, window, workspace, Selection} = require('vscode');
+const {commands, window, workspace, Selection, Range, Position} = require('vscode');
 
 
 let writingMode = false;
 
 const activate = ({subscriptions}) => {
-  let oldText = window.activeTextEditor.document.getText();
-  // let oldText = '';
-  let listener = {dispose() {}};
+  const {activeTextEditor} = window;
+  let oldText = activeTextEditor.document.getText();
+  let documentListener = {};
+  let selectionListener = {};
   
   subscriptions.push(commands.registerCommand(
     'extension.kerouac.writingMode',
@@ -14,9 +15,11 @@ const activate = ({subscriptions}) => {
       if(writingMode === false) {
         writingMode = true;
         window.showInformationMessage('Writing mode ACTIVATED.');
-        listener = window.onDidChangeTextEditorSelection(handleSelection);
-        workspace.onDidChangeTextDocument(handleChange);
-        oldText = window.activeTextEditor.document.getText();
+        selectionListener = window
+          .onDidChangeTextEditorSelection(resetCursor);
+        documentListener = workspace
+          .onDidChangeTextDocument((handleChange));
+        oldText = activeTextEditor.document.getText();
       }
     }
   ));
@@ -27,12 +30,13 @@ const activate = ({subscriptions}) => {
       if(writingMode === true) {
         writingMode = false;
         window.showInformationMessage('Editing mode ACTIVATED.');
-        listener.dispose();
+        documentListener.dispose();
+        selectionListener.dispose();
       }
     }
   ));
 
-  function handleSelection() {
+  function resetCursor() {
     const {activeTextEditor} = window;
     activeTextEditor.selections = activeTextEditor.selections.map(
       ({active}) => new Selection(active, active)
@@ -40,9 +44,18 @@ const activate = ({subscriptions}) => {
   }
 
   function handleChange({contentChanges}) {
-    console.log(contentChanges);
-    const text = window.activeTextEditor.document.getText();
-    console.log(oldText.length - text.length);
+    if (contentChanges.length > 0) {
+      if (contentChanges[0].text.length === 0) {
+        const fullTextRange = new Range(new Position(0, 0), new Position(oldText.length, oldText.length));
+        const {length} = activeTextEditor.document.getText();
+        activeTextEditor.edit((editBuilder) => {
+          editBuilder.replace(fullTextRange, oldText);
+        })
+        // window.showInputBox({placeHolder: `There's no deletion in writing mode!`});
+        window.showInformationMessage(`We don't want to delete during writing mode. It would make Jack Kerouac sad.`, {modal: true})
+      }
+    }
+    const text = activeTextEditor.document.getText();
     oldText = text;
   }
 }
