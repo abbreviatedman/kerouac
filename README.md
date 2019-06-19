@@ -20,9 +20,9 @@ code --install-extension kerouac-0.1.0.vsix
 ### Feature Roadmap to 1.0
 
 - [X] User can easily switch to writing mode.
-- [ ] User can switch to editing mode.
+- [X] User can switch to editing mode.
     - [X] User can switch back and forth.
-    - [ ] User gets a gentle confirmation before switching back to editing mode.
+    - [X] User gets a gentle confirmation before switching back to editing mode.
 - [X] In writing mode, user is frictionlessly prevented from selecting text in all cases.
     - [X] Single-cursor selection is disallowed.
     - [X] Selection with multiple cursors is disallowed.

@@ -1,11 +1,11 @@
 const {commands, window, workspace, Selection, Range, Position} = require('vscode');
 
 
-let writingMode = false;
 
 const activate = ({subscriptions}) => {
   const {activeTextEditor} = window;
   let oldText = activeTextEditor.document.getText();
+  let writingMode = false;
   let documentListener = {};
   let selectionListener = {};
   
@@ -16,7 +16,7 @@ const activate = ({subscriptions}) => {
         writingMode = true;
         window.showInformationMessage('Writing mode ACTIVATED.');
         selectionListener = window
-          .onDidChangeTextEditorSelection(resetCursors);
+          .onDidChangeTextEditorSelection(handleSelection);
         documentListener = workspace
           .onDidChangeTextDocument(handleChange);
         oldText = activeTextEditor.document.getText();
@@ -28,15 +28,22 @@ const activate = ({subscriptions}) => {
     'extension.kerouac.editingMode',
     () => {
       if (writingMode === true) {
-        writingMode = false;
-        window.showInformationMessage('Editing mode ACTIVATED.');
-        documentListener.dispose();
-        selectionListener.dispose();
+        const phrase = randomPhrase();
+        const prompt = `Please type the following phrase (without the quotes!) if you're positive you want to switch to editing mode: "${phrase}"`;
+        window.showInputBox({prompt})
+          .then((userInput) => {
+            if (userInput === phrase) {
+              writingMode = false;
+              window.showInformationMessage('Editing mode ACTIVATED.');
+              documentListener.dispose();
+              selectionListener.dispose();
+            }
+        });
       }
     }
   ));
 
-  function resetCursors() {
+  function handleSelection() {
     if (!(activeTextEditor.selection.isEmpty)) {
       activeTextEditor.selections = activeTextEditor.selections.map(
         ({active}) => new Selection(active, active)
@@ -59,9 +66,19 @@ const activate = ({subscriptions}) => {
       activeTextEditor.edit((editBuilder) => {
         editBuilder.replace(fullTextRange, oldText);
       });
-      window.showInformationMessage(`We don't want to delete during writing mode. It would make Jack Kerouac sad.`, {modal: true});
+      window.showInformationMessage(randomPhrase(), {modal: true});
     }
     oldText = text;
+  }
+
+  function randomPhrase() {
+    const phrases = [
+      `Exiting writing mode this quickly would probably make Jack Kerouac feel very sad.`,
+      `Nothing behind me, everything ahead of me, as is ever so on the road.`,
+      `A tuple of two characters, like a pair of opening and closing brackets.`
+    ];
+    
+    return phrases[Math.floor(Math.random() * phrases.length)];
   }
 }
 
