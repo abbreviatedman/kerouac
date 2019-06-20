@@ -29,7 +29,7 @@ const activate = ({subscriptions}) => {
     () => {
       if (writingMode === true) {
         const phrase = randomPhrase();
-        const prompt = `Please type the following phrase (without the quotes!) if you're positive you want to switch to editing mode: "${phrase}"`;
+        const prompt = `Resist the urge to fiddle! TYPE THE FOLLOWING PHRASE (WITHOUT THE QUOTES!) IF YOU'RE ABSOLUTELY POSITIVE YOU WANT TO SWITCH TO EDITING MODE: "${phrase}"`;
         window.showInputBox({prompt})
           .then((userInput) => {
             if (userInput === phrase) {
@@ -66,7 +66,7 @@ const activate = ({subscriptions}) => {
       activeTextEditor.edit((editBuilder) => {
         editBuilder.replace(fullTextRange, oldText);
       });
-      window.showInformationMessage(randomPhrase(), {modal: true});
+      window.showInformationMessage(`There's no crying in baseball or deletion in writing mode.`, {modal: true});
     }
     oldText = text;
   }
