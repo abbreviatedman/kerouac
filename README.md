@@ -23,8 +23,4 @@ code --install-extension kerouac-0.1.0.vsix
 - [X] User can switch to editing mode.
     - [X] User can switch back and forth.
     - [X] User gets a gentle confirmation before switching back to editing mode.
-- [X] In writing mode, user is frictionlessly prevented from selecting text in all cases.
-    - [X] Single-cursor selection is disallowed.
-    - [X] Selection with multiple cursors is disallowed.
-    - [X] Final placement of cursor follows cursor movement of prevented selection command.
 - [X] In writing mode, user is prevented from deleting text with any deletion key.

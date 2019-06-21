@@ -15,8 +15,8 @@ const activate = ({subscriptions}) => {
         writingMode = true;
         window.showInformationMessage('Writing mode ACTIVATED.');
 
-        selectionListener = window
-          .onDidChangeTextEditorSelection(handleSelection);
+        // selectionListener = window
+        //   .onDidChangeTextEditorSelection(handleSelection);
         documentListener = workspace
           .onDidChangeTextDocument(handleChange);
           
@@ -31,7 +31,7 @@ const activate = ({subscriptions}) => {
               writingMode = false;
               window.showInformationMessage('Editing mode ACTIVATED.');
               documentListener.dispose();
-              selectionListener.dispose();
+              // selectionListener.dispose();
             } else {
               window.showInformationMessage(`Editing mode NOT activated.`);
             }
@@ -40,13 +40,13 @@ const activate = ({subscriptions}) => {
     }
   ));
 
-  function handleSelection() {
-    if (!(activeTextEditor.selection.isEmpty)) {
-      activeTextEditor.selections = activeTextEditor.selections.map(
-        ({active}) => new Selection(active, active)
-      );
-    }
-  }
+  // function handleSelection() {
+  //   if (!(activeTextEditor.selection.isEmpty)) {
+  //     activeTextEditor.selections = activeTextEditor.selections.map(
+  //       ({active}) => new Selection(active, active)
+  //     );
+  //   }
+  // }
 
   function handleChange({contentChanges}) {
     const currentText = activeTextEditor.document.getText();
@@ -57,7 +57,7 @@ const activate = ({subscriptions}) => {
         new Position(oldText.length, oldText.length)
       );
 
-      activeTextEditor.edit((editBuilder) => {// This is only true if the change was a subtraction.
+      activeTextEditor.edit((editBuilder) => {
         editBuilder.replace(fullTextRange, oldText);
       });
       
