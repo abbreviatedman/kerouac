@@ -7,17 +7,14 @@ const activate = ({subscriptions}) => {
     ? activeTextEditor.document.getText()
     : ``;
   let writingMode = false;
-  let documentListener = {};
-  let selectionListener = {};
+  let listener = {};
 
   subscriptions.push(commands.registerCommand('kerouac.toggleMode', () => {
       if (writingMode === false) {
         writingMode = true;
         window.showInformationMessage('Writing mode ACTIVATED.');
 
-        // selectionListener = window
-        //   .onDidChangeTextEditorSelection(handleSelection);
-        documentListener = workspace
+        listener = workspace
           .onDidChangeTextDocument(handleChange);
           
         oldText = activeTextEditor.document.getText();
@@ -30,8 +27,7 @@ const activate = ({subscriptions}) => {
             if (userInput === phrase) {
               writingMode = false;
               window.showInformationMessage('Editing mode ACTIVATED.');
-              documentListener.dispose();
-              // selectionListener.dispose();
+              listener.dispose();
             } else {
               window.showInformationMessage(`Editing mode NOT activated.`);
             }
@@ -39,14 +35,6 @@ const activate = ({subscriptions}) => {
       }
     }
   ));
-
-  // function handleSelection() {
-  //   if (!(activeTextEditor.selection.isEmpty)) {
-  //     activeTextEditor.selections = activeTextEditor.selections.map(
-  //       ({active}) => new Selection(active, active)
-  //     );
-  //   }
-  // }
 
   function handleChange({contentChanges}) {
     const currentText = activeTextEditor.document.getText();
