@@ -57,12 +57,18 @@ const activate = ({subscriptions}) => {
 
   function randomPhrase() {
     const phrases = [
-      `Exiting writing mode this quickly would probably make Jack Kerouac feel very sad.`,
-      `Nothing behind me, everything ahead of me, as is ever so on the road.`,
-      `A tuple of two characters, like a pair of opening and closing brackets.`,
       `Do you see the story? Do you see anything? It seems to me I am trying to tell you a dream.`,
       `Like a running blaze on a plain, like a flash of lightning in the clouds. We live in the flicker.`,
+      `Exiting writing mode this quickly would probably make Jack Kerouac feel very sad.`,
+      `A tuple of two characters, like a pair of opening and closing brackets.`,
       `Perfectly balanced, as all things should be.`,
+      `No matter what you do it’s bound to be a waste of time in the end so you might as well go mad.`,
+      `The sensation of death kicking at my heels to move on, with a phantom dogging its own heels.`,
+      `Turn your thinking into your work, your thoughts a book, in sieges.`,
+      `What is that feeling when you’re driving away from people and they recede on the plain till you see their specks dispersing?`,
+      `It’s the too-huge world vaulting us, and it’s good-bye.`,
+      `But we lean forward to the next crazy venture beneath the skies.`
+      `Nothing behind me, everything ahead of me, as is ever so on the road.`,
     ];
     
     return phrases[Math.floor(Math.random() * phrases.length)];
