@@ -10,9 +10,7 @@ const activate = ({subscriptions}) => {
   let documentListener = {};
   let selectionListener = {};
 
-  subscriptions.push(commands.registerCommand(
-    'kerouac.toggleMode',
-    () => {
+  subscriptions.push(commands.registerCommand('kerouac.toggleMode', () => {
       if (writingMode === false) {
         writingMode = true;
         window.showInformationMessage('Writing mode ACTIVATED.');
@@ -34,6 +32,8 @@ const activate = ({subscriptions}) => {
               window.showInformationMessage('Editing mode ACTIVATED.');
               documentListener.dispose();
               selectionListener.dispose();
+            } else {
+              window.showInformationMessage(`Editing mode NOT activated.`);
             }
         });
       }
@@ -51,17 +51,13 @@ const activate = ({subscriptions}) => {
   function handleChange({contentChanges}) {
     const currentText = activeTextEditor.document.getText();
 
-    if (
-      contentChanges.length > 0
-      && contentChanges[0].text.length === 0
-      && currentText.length < oldText.length
-    ) {
+    if (contentChanges.length > 0 && currentText.length < oldText.length ) {
       const fullTextRange = new Range(
         new Position(0, 0),
         new Position(oldText.length, oldText.length)
       );
 
-      activeTextEditor.edit((editBuilder) => {
+      activeTextEditor.edit((editBuilder) => {// This is only true if the change was a subtraction.
         editBuilder.replace(fullTextRange, oldText);
       });
       
@@ -77,7 +73,8 @@ const activate = ({subscriptions}) => {
       `Nothing behind me, everything ahead of me, as is ever so on the road.`,
       `A tuple of two characters, like a pair of opening and closing brackets.`,
       `Do you see the story? Do you see anything? It seems to me I am trying to tell you a dream.`,
-      `Like a running blaze on a plain, like a flash of lightning in the clouds. We live in the flicker.`
+      `Like a running blaze on a plain, like a flash of lightning in the clouds. We live in the flicker.`,
+      `Perfectly balanced, as all things should be.`,
     ];
     
     return phrases[Math.floor(Math.random() * phrases.length)];
