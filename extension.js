@@ -4,13 +4,16 @@ const {commands, window, workspace, Selection, Range, Position} = require('vscod
 
 const activate = ({subscriptions}) => {
   const {activeTextEditor} = window;
-  let oldText = activeTextEditor.document.getText();
+  let oldText = activeTextEditor
+    ? activeTextEditor.document.getText()
+    : null;
   let writingMode = false;
   let documentListener = {};
   let selectionListener = {};
-  
+
+
   subscriptions.push(commands.registerCommand(
-    'extension.kerouac.writingMode',
+    'kerouac.writingMode',
     () => {
       if (writingMode === false) {
         writingMode = true;
@@ -25,9 +28,37 @@ const activate = ({subscriptions}) => {
   ));
 
   subscriptions.push(commands.registerCommand(
-    'extension.kerouac.editingMode',
+    'kerouac.editingMode',
     () => {
       if (writingMode === true) {
+        const phrase = randomPhrase();
+        const prompt = `Resist the urge to fiddle! TYPE THE FOLLOWING PHRASE (WITHOUT THE QUOTES!) IF YOU'RE ABSOLUTELY POSITIVE YOU WANT TO SWITCH TO EDITING MODE: "${phrase}"`;
+        window.showInputBox({prompt})
+          .then((userInput) => {
+            if (userInput === phrase) {
+              writingMode = false;
+              window.showInformationMessage('Editing mode ACTIVATED.');
+              documentListener.dispose();
+              selectionListener.dispose();
+            }
+        });
+      }
+    }
+  ));
+
+
+  subscriptions.push(commands.registerCommand(
+    'kerouac.toggleMode',
+    () => {
+      if (writingMode === false) {
+        writingMode = true;
+        window.showInformationMessage('Writing mode ACTIVATED.');
+        selectionListener = window
+          .onDidChangeTextEditorSelection(handleSelection);
+        documentListener = workspace
+          .onDidChangeTextDocument(handleChange);
+        oldText = activeTextEditor.document.getText();
+      } else {
         const phrase = randomPhrase();
         const prompt = `Resist the urge to fiddle! TYPE THE FOLLOWING PHRASE (WITHOUT THE QUOTES!) IF YOU'RE ABSOLUTELY POSITIVE YOU WANT TO SWITCH TO EDITING MODE: "${phrase}"`;
         window.showInputBox({prompt})
