@@ -11,42 +11,6 @@ const activate = ({subscriptions}) => {
   let documentListener = {};
   let selectionListener = {};
 
-
-  subscriptions.push(commands.registerCommand(
-    'kerouac.writingMode',
-    () => {
-      if (writingMode === false) {
-        writingMode = true;
-        window.showInformationMessage('Writing mode ACTIVATED.');
-        selectionListener = window
-          .onDidChangeTextEditorSelection(handleSelection);
-        documentListener = workspace
-          .onDidChangeTextDocument(handleChange);
-        oldText = activeTextEditor.document.getText();
-      }
-    }
-  ));
-
-  subscriptions.push(commands.registerCommand(
-    'kerouac.editingMode',
-    () => {
-      if (writingMode === true) {
-        const phrase = randomPhrase();
-        const prompt = `Resist the urge to fiddle! TYPE THE FOLLOWING PHRASE (WITHOUT THE QUOTES!) IF YOU'RE ABSOLUTELY POSITIVE YOU WANT TO SWITCH TO EDITING MODE: "${phrase}"`;
-        window.showInputBox({prompt})
-          .then((userInput) => {
-            if (userInput === phrase) {
-              writingMode = false;
-              window.showInformationMessage('Editing mode ACTIVATED.');
-              documentListener.dispose();
-              selectionListener.dispose();
-            }
-        });
-      }
-    }
-  ));
-
-
   subscriptions.push(commands.registerCommand(
     'kerouac.toggleMode',
     () => {
@@ -60,7 +24,7 @@ const activate = ({subscriptions}) => {
         oldText = activeTextEditor.document.getText();
       } else {
         const phrase = randomPhrase();
-        const prompt = `Resist the urge to fiddle! TYPE THE FOLLOWING PHRASE (WITHOUT THE QUOTES!) IF YOU'RE ABSOLUTELY POSITIVE YOU WANT TO SWITCH TO EDITING MODE: "${phrase}"`;
+        const prompt = `Resist the urge to fiddle! Type the following quote if you're SURE you're done writing: "${phrase}"`;
         window.showInputBox({prompt})
           .then((userInput) => {
             if (userInput === phrase) {
@@ -83,12 +47,11 @@ const activate = ({subscriptions}) => {
   }
 
   function handleChange({contentChanges}) {
-    const text = activeTextEditor.document.getText();
-    const {length} = text;
+    const currentText = activeTextEditor.document.getText();
     if (
       contentChanges.length > 0
       && contentChanges[0].text.length === 0
-      && length < oldText.length
+      && currentText.length < oldText.length
     ) {
       const fullTextRange = new Range(
         new Position(0, 0),
@@ -99,14 +62,15 @@ const activate = ({subscriptions}) => {
       });
       window.showInformationMessage(`There's no crying in baseball or deletion in writing mode.`, {modal: true});
     }
-    oldText = text;
+    oldText = currentText;
   }
 
   function randomPhrase() {
     const phrases = [
       `Exiting writing mode this quickly would probably make Jack Kerouac feel very sad.`,
       `Nothing behind me, everything ahead of me, as is ever so on the road.`,
-      `A tuple of two characters, like a pair of opening and closing brackets.`
+      `A tuple of two characters, like a pair of opening and closing brackets.`,
+      `Do you see the story? Do you see anything? It seems to me I am trying to tell you a dream.`
     ];
     
     return phrases[Math.floor(Math.random() * phrases.length)];

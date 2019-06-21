@@ -11,21 +11,11 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:kerouac.writingMode",
-		"onCommand:kerouac.editingMode",
 		"onCommand:kerouac.toggleMode"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
-			{
-				"command": "kerouac.writingMode",
-				"title": "Kerouac - Writing Mode"
-			},
-			{
-				"command": "kerouac.editingMode",
-				"title": "Kerouac - Editing Mode"
-			},
 			{
 				"command": "kerouac.toggleMode",
 				"title": "Kerouac - Toggle Writing/Editing Mode"
